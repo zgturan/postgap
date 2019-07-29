@@ -1,1 +1,1 @@
-CAPE_eQTL_E003.vcf.gz,CAPE_eQTL_E092.vcf.gz
+CAPE_eQTL_E003.vcf.gz
