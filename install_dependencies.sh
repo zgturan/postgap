@@ -81,6 +81,12 @@ make
 cp bin/wiggletools ../bin
 cd ..
 
+# bigBedToBed
+echo Installing bigBedToBed
+mkdir -p bigBedToBed
+cd bigBedToBed
+wget http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/bigBedToBed
+
 # pybedtools v0.7.8, requests, pandas
 pip install pybedtools==0.7.4 requests pandas flask cherrypy
 
