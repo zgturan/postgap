@@ -1,1 +1,1 @@
-deltaSVM_E089.vcf.gz,deltaSVM_E006.vcf.gz,deltaSVM_E117.vcf.gz
+deltaSVM_E056.vcf.gz,deltaSVM_E006.vcf.gz,deltaSVM_E003.vcf.gz,deltaSVM_E121.vcf.gz,deltaSVM_E089.vcf.gz,deltaSVM_E055.vcf.gz,deltaSVM_E004.vcf.gz,deltaSVM_E109.vcf.gz,deltaSVM_E090.vcf.gz,deltaSVM_E123.vcf.gz,deltaSVM_E080.vcf.gz
