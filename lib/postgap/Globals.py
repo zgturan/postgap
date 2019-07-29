@@ -55,6 +55,7 @@ EVIDENCE_WEIGHTS = {
 	'PCHiC': 1,
 	'Jeme_ENCODE': 1,
 	'Jeme_FANTOM5': 1,
+	'GERP':1,
 	'Nearest': 1
 }
 
