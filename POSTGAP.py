@@ -614,6 +614,13 @@ def genecluster_association_table(association):
 				]
 
 				row += [tissue_score[tissue_name] for tissue_name in postgap.Globals.ALL_TISSUES]
+				row += [tissue_score_capeeqtl[tissue_name_capeeqtl] for tissue_name_capeeqtl in postgap.Globals.CAPE_eQTL_TISSUES]
+      				row += [tissue_score_capedsqtl[tissue_name_capedsqtl] for tissue_name_capedsqtl in postgap.Globals.CAPE_dsQTL_TISSUES]
+				row += [tissue_score_delta[tissue_name_delta] for tissue_name_delta in postgap.Globals.deltaSVM_TISSUES]
+      				row += [tissue_score_deep[tissue_name_deep] for tissue_name_deep in postgap.Globals.DeepSEA_TISSUES]
+      				row += [tissue_score_dna[tissue_name_dna] for tissue_name_dna in postgap.Globals.DNase1_TISSUES]
+				row += [tissue_score_jeme_encode[tissue_name_jeme_encode] for tissue_name_jeme_encode in postgap.Globals.Jeme_ENCODE_TISSUES]
+    				row += [tissue_score_fantom5[tissue_name_fantom5] for tissue_name_fantom5 in postgap.Globals.Jeme_FANTOM5_TISSUES]
 				row += [gene_snp_association.intermediary_scores[functional_source.display_name] for functional_source in postgap.Cisreg.sources + postgap.Reg.sources]
 				results.append(row)
 
