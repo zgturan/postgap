@@ -616,6 +616,27 @@ def compute_v2g_scores(reg, cisreg):
 
 			if evidence.source == 'GTEx':
 				intermediary_scores[gene][evidence.tissue] = float(evidence.score)
+				
+			if evidence.source == 'CAPE_eQTL':
+				intermediary_scores[gene][evidence.tissue] = float(evidence.score)
+			  
+			if evidence.source == 'CAPE_dsQTL':
+				intermediary_scores[gene][evidence.tissue] = float(evidence.score)
+			  
+			if evidence.source == 'deltaSVM':
+				intermediary_scores[gene][evidence.tissue] = float(evidence.score)
+			  
+			if evidence.source == 'DeepSEA':
+				intermediary_scores[gene][evidence.tissue] = float(evidence.score)
+			  
+			if evidence.source == 'DNase1':
+				intermediary_scores[gene][evidence.tissue] = float(evidence.score)
+					
+			if evidence.source == 'Jeme_ENCODE':
+				intermediary_scores[gene][evidence.tissue] = float(evidence.score)
+			  
+			if evidence.source == 'Jeme_FANTOM5':
+				intermediary_scores[gene][evidence.tissue] = float(evidence.score)
 
 
 			# Ad hoc bounds defined here:
