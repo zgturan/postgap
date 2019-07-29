@@ -43,10 +43,18 @@ BLACKLISTED_REGIONS = [
 EVIDENCE_WEIGHTS = {
 	'Regulome': 1,
 	'VEP': 1,
+	'CAPE_eQTL': 1,
+	'CAPE_dsQTL': 1,
+	'deltaSVM': 1,
+	'DeepSEA': 1,
+	'CATO': 1,
+	'DNase1': 1,
 	'GTEx': 1,
 	'Fantom5': 1,
 	'DHS': 1,
 	'PCHiC': 1,
+	'Jeme_ENCODE': 1,
+	'Jeme_FANTOM5': 1,
 	'Nearest': 1
 }
 
@@ -68,3 +76,18 @@ PERFORM_BAYESIAN = False
 ALL_TISSUES=[]
 
 source_list=[]
+
+CAPE_eQTL_TISSUES=[]
+
+CAPE_dsQTL_TISSUES=[]
+
+deltaSVM_TISSUES=[]
+
+DeepSEA_TISSUES=[]
+
+DNase1_TISSUES=[]
+
+Jeme_ENCODE_TISSUES=[]
+
+Jeme_FANTOM5_TISSUES=[]
+
