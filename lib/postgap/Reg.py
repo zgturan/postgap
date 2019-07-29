@@ -291,7 +291,150 @@ class GERP(Reg_source):
 				)
 
 		return res
+
+	
+	
+class CAPE_eQTL(Reg_source):
+	display_name = "CAPE_eQTL"
+	def run(self, ld_snps, tissues):
+		tissues_f=fnmatch.filter(os.listdir('databases/CAPE_eQTL/'), '*.bed')
+		snp_hash = dict( (snp.rsID, snp) for snp in ld_snps)
+		res=[]
+		for tf in tissues_f:
+			intersection = postgap.BedTools.overlap_snps_to_bed(ld_snps, postgap.Globals.DATABASES_DIR + '/CAPE_eQTL/' + tf)
+			tf=tf
+			for feature in intersection:
+				res.append(Regulatory_Evidence(
+					snp = snp_hash[feature[7]],
+		      			score = float(feature[3]),
+		      			source = self.display_name,
+		      			info = None,
+		      			tissue = tf,
+		      			study = {
+						'tf': tf
+					}
+			))
+		logging.info("\tFound %i interactions in CAPE_eQTL" % (len(res)))
+		return res
+
+
+class CAPE_dsQTL(Reg_source):
+	display_name = "CAPE_dsQTL"
+	def run(self, ld_snps, tissues):
+		tissues_f=fnmatch.filter(os.listdir('databases/CAPE_dsQTL/'), '*.bed')
+		snp_hash = dict( (snp.rsID, snp) for snp in ld_snps)
+		res=[]
+		for tf in tissues_f:
+			intersection = postgap.BedTools.overlap_snps_to_bed(ld_snps, postgap.Globals.DATABASES_DIR + '/CAPE_dsQTL/' + tf)
+		  	tf=tf
+		  	for feature in intersection:
+				res.append(Regulatory_Evidence(
+		      		snp = snp_hash[feature[7]],
+		      		score = float(feature[3]),
+		      		source = self.display_name,
+		      		info = None,
+		      		tissue = tf,
+		      		study = {
+					'tf': tf
+				}
+			))
+		logging.info("\tFound %i interactions in CAPE_dsQTL" % (len(res)))
+		return res
 		
+class deltaSVM(Reg_source):
+	display_name = "deltaSVM"
+	def run(self, ld_snps, tissues):
+		tissues_f=fnmatch.filter(os.listdir('databases/deltaSVM/'), '*.bed')
+		snp_hash = dict( (snp.rsID, snp) for snp in ld_snps)
+		res=[]
+		for tf in tissues_f:
+			intersection = postgap.BedTools.overlap_snps_to_bed(ld_snps, postgap.Globals.DATABASES_DIR + '/deltaSVM/' + tf)
+		  	tf=tf
+		  	for feature in intersection:
+				res.append(Regulatory_Evidence(
+		      		snp = snp_hash[feature[7]],
+		      		score = float(feature[3])/29,
+		      		source = self.display_name,
+		      		info = None,
+		      		tissue = tf,
+		      		study = {
+					'tf': tf
+				}
+			))
+		logging.info("\tFound %i interactions in deltaSVM" % (len(res)))
+		return res		
+		
+
+class DeepSEA(Reg_source):
+	display_name = "DeepSEA"
+	def run(self, ld_snps, tissues):
+		tissues_f=fnmatch.filter(os.listdir('databases/DeepSEA/'), '*.bed')
+		snp_hash = dict( (snp.rsID, snp) for snp in ld_snps)
+		res=[]
+		for tf in tissues_f:
+			intersection = postgap.BedTools.overlap_snps_to_bed(ld_snps, postgap.Globals.DATABASES_DIR + '/DeepSEA/' + tf)
+		  	tf=tf
+		  	for feature in intersection:
+				res.append(Regulatory_Evidence(
+		      		snp = snp_hash[feature[7]],
+		      		score = float(feature[3]),
+		      		source = self.display_name,
+		      		info = None,
+		      		tissue = tf,
+		      		study = {
+					'tf': tf
+				}
+			))
+		logging.info("\tFound %i interactions in DeepSEA" % (len(res)))
+		return res			
+	
+
+
+class CATO(Reg_source):
+	display_name = "CATO"
+	def run(self, ld_snps, tissues):
+		snp_hash = dict( (snp.rsID, snp) for snp in ld_snps)
+		intersection = postgap.BedTools.overlap_snps_to_bed(ld_snps, postgap.Globals.DATABASES_DIR + "/CATO_Average.bed")
+		res = filter (lambda X: X.score, (self.get_cato_evidence(feature, snp_hash) for feature in intersection))
+		logging.info("\tFound %i regulatory variants in CATO" % (len(res)))
+		return res
+	
+	def get_cato_evidence(self, feature, snp_hash):
+		return Regulatory_Evidence(
+			snp = snp_hash[feature[7]],
+			source = self.display_name,
+			score = float(feature[3]),
+			study = None,
+			tissue = None,
+			info = None
+		)
+
+		
+class DNase1(Reg_source):
+	display_name = "DNase1"
+	def run(self, ld_snps, tissues):
+		tissues_f=fnmatch.filter(os.listdir('databases/DNase1/'), '*.bed')
+		snp_hash = dict( (snp.rsID, snp) for snp in ld_snps)
+		res=[]
+		for tf in tissues_f:
+			intersection = postgap.BedTools.overlap_snps_to_bed(ld_snps, postgap.Globals.DATABASES_DIR + '/DNase1/' + tf)
+		  	tf=tf
+		  	for feature in intersection:
+				res.append(Regulatory_Evidence(
+		      		snp = snp_hash[feature[7]],
+				score = float(feature[3]),
+		      		source = self.display_name,
+		      		info = None,
+		      		tissue = tf,
+		      		study = {
+					'tf': tf
+				}
+			))
+		logging.info("\tFound %i interactions in DNase1" % (len(res)))
+		return res		
+		
+
+	
 
 def get_filtered_subclasses(subclasses_filter):
 
