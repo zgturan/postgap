@@ -1,1 +1,1 @@
-CAPE_dsQTL_E094.vcf.gz,CAPE_dsQTL_E114.vcf.gz,CAPE_dsQTL_E110.vcf.gz
+CAPE_dsQTL_E094.vcf.gz,CAPE_dsQTL_E114.vcf.gz,CAPE_dsQTL_E121.vcf.gz,CAPE_dsQTL_E119.vcf.gz
