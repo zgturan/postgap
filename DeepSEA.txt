@@ -1,0 +1,1 @@
+DeepSEA_E118.vcf.gz,DeepSEA_E116.vcf.gz,DeepSEA_E008.vcf.gz,DeepSEA_E117.vcf.gz,DeepSEA_E021.vcf.gz,DeepSEA_E120.vcf.gz,DeepSEA_E123.vcf.gz,DeepSEA_E124.vcf.gz,DeepSEA_E128.vcf.gz
