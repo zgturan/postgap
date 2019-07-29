@@ -94,6 +94,27 @@ def main():
 
 
 	postgap.Globals.ALL_TISSUES=postgap.Integration.get_all_tissues()
+	
+	CAPE_eQTL = open('CAPE_eQTL.txt').read().split(',')
+	postgap.Globals.CAPE_eQTL_TISSUES = [s.replace("vcf.gz","bed") for s in CAPE_eQTL ]
+	
+	CAPE_dsQTL = open('CAPE_dsQTL.txt').read().split(',')
+	postgap.Globals.CAPE_dsQTL_TISSUES = [s.replace("vcf.gz","bed") for s in CAPE_dsQTL ]
+	
+	deltaSVM = open('deltaSVM.txt').read().split(',')
+	postgap.Globals.deltaSVM_TISSUES = [s.replace("vcf.gz","bed") for s in deltaSVM ]
+	
+	DeepSEA = open('DeepSEA.txt').read().split(',')
+	postgap.Globals.DeepSEA_TISSUES = [s.replace("vcf.gz","bed") for s in DeepSEA ]
+	
+	DNase1 = open('DNase1.txt').read().split(',')
+	postgap.Globals.DNase1_TISSUES = map(( lambda x: x + '.bed'), DNase1)
+	
+	Jeme_ENCODE = open('Jeme_ENCODE.txt').read().split(',')
+	postgap.Globals.Jeme_ENCODE_TISSUES = [s.replace(".csv",".bed") for s in Jeme_ENCODE ]
+	
+	Jeme_FANTOM5 = open('Jeme_FANTOM5.txt').read().split(',')
+	postgap.Globals.Jeme_FANTOM5_TISSUES = [s.replace(".csv",".bed") for s in Jeme_FANTOM5 ]
 
 
 	if options.hdf5 is not None and options.sqlite is not None:
@@ -236,8 +257,8 @@ def get_options():
 		    )
 
     GWAS_options = ["GWAS_Catalog", "GRASP", "Phewas_Catalog", "GWAS_DB"]
-    CisReg_options = ["GTEx", "VEP", "Fantom5", "DHS", "PCHiC", "Nearest"]
-    Reg_options = ["Regulome", "VEP_reg"]
+    CisReg_options = ["GTEx", "VEP", "Fantom5", "DHS", "PCHiC", "Nearest", "Jeme_ENCODE", "Jeme_FANTOM5"]
+    Reg_options = ["Regulome", "VEP_reg", 'GERP','CAPE_eQTL', 'CAPE_dsQTL', 'deltaSVM', 'DeepSEA','CATO', 'DNase1']
     TYPE_options = ['binom','ML','EM', 'ML_EM']
 
     parser.add_argument('--efos', nargs='*')
@@ -335,7 +356,7 @@ def pretty_output(associations):
 		Returntype: String
 
 	"""
-	header = "\t".join(['ld_snp_rsID', 'chrom', 'pos', 'GRCh38_chrom', 'GRCh38_pos', 'afr', 'amr', 'eas', 'eur', 'sas', 'gnomad', 'gnomad_sas', 'gnomad_oth', 'gnomad_asj', 'gnomad_nfe', 'gnomad_afr', 'gnomad_amr', 'gnomad_fin', 'gnomad_eas','gene_symbol', 'gene_id', 'gene_chrom', 'gene_tss', 'GRCh38_gene_chrom', 'GRCh38_gene_pos', 'disease_name', 'disease_efo_id', 'score', 'rank', 'r2', 'cluster_id', 'gwas_source', 'gwas_snp', 'gwas_pvalue', 'gwas_pvalue_description', 'gwas_odds_ratio', 'gwas_odds_ratio_ci_start', 'gwas_odds_ratio_ci_end', 'gwas_beta', 'gwas_size', 'gwas_pmid', 'gwas_study', 'gwas_reported_trait', 'ls_snp_is_gwas_snp', 'vep_terms', 'vep_sum', 'vep_mean'] + ["GTEx_" + tissue_name for tissue_name in postgap.Globals.ALL_TISSUES] + [source.display_name for source in postgap.Cisreg.sources + postgap.Reg.sources]).encode('utf-8')
+	header = "\t".join(['ld_snp_rsID', 'chrom', 'pos', 'GRCh38_chrom', 'GRCh38_pos', 'afr', 'amr', 'eas', 'eur', 'sas', 'gnomad', 'gnomad_sas', 'gnomad_oth', 'gnomad_asj', 'gnomad_nfe', 'gnomad_afr', 'gnomad_amr', 'gnomad_fin', 'gnomad_eas','gene_symbol', 'gene_id', 'gene_chrom', 'gene_tss', 'GRCh38_gene_chrom', 'GRCh38_gene_pos', 'disease_name', 'disease_efo_id', 'score', 'rank', 'r2', 'cluster_id', 'gwas_source', 'gwas_snp', 'gwas_pvalue', 'gwas_pvalue_description', 'gwas_odds_ratio', 'gwas_odds_ratio_ci_start', 'gwas_odds_ratio_ci_end', 'gwas_beta', 'gwas_size', 'gwas_pmid', 'gwas_study', 'gwas_reported_trait', 'ls_snp_is_gwas_snp', 'vep_terms', 'vep_sum', 'vep_mean'] + ["GTEx_" + tissue_name for tissue_name in postgap.Globals.ALL_TISSUES] + [tissue_name_capeeqtl for tissue_name_capeeqtl in postgap.Globals.CAPE_eQTL_TISSUES] + [tissue_name_capedsqtl for tissue_name_capedsqtl in postgap.Globals.CAPE_dsQTL_TISSUES] + [tissue_name_delta for tissue_name_delta in postgap.Globals.deltaSVM_TISSUES] + [tissue_name_deep for tissue_name_deep in postgap.Globals.DeepSEA_TISSUES] + [tissue_name_dna for tissue_name_dna in postgap.Globals.DNase1_TISSUES] + [tissue_name_jeme_encode for tissue_name_jeme_encode in postgap.Globals.Jeme_ENCODE_TISSUES]+ [tissue_name_fantom5 for tissue_name_fantom5 in postgap.Globals.Jeme_FANTOM5_TISSUES] + [source.display_name for source in postgap.Cisreg.sources + postgap.Reg.sources]).encode('utf-8')
 	content = filter(lambda X: len(X) > 0, map(pretty_cluster_association, associations))
 	return "\n".join([header] + content)
 
@@ -480,7 +501,62 @@ def genecluster_association_table(association):
 						tissue_score[tissue_name] = gene_snp_association.intermediary_scores[tissue_name]
 					else:
 						tissue_score[tissue_name] = 0
+						
+				
+				tissue_score_jeme_encode = dict()
+				for tissue_name_jeme_encode in postgap.Globals.Jeme_ENCODE_TISSUES:
+					if tissue_name_jeme_encode in gene_snp_association.intermediary_scores:
+						tissue_score_jeme_encode[tissue_name_jeme_encode] = gene_snp_association.intermediary_scores[tissue_name_jeme_encode]
+				  	else:
+						tissue_score_jeme_encode[tissue_name_jeme_encode] = 0
+						
+				tissue_score_fantom5 = dict()
+				for tissue_name_fantom5 in postgap.Globals.Jeme_FANTOM5_TISSUES:
+					if tissue_name_fantom5 in gene_snp_association.intermediary_scores:
+						tissue_score_fantom5[tissue_name_fantom5] = gene_snp_association.intermediary_scores[tissue_name_fantom5]
+				  	else:
+						tissue_score_fantom5[tissue_name_fantom5] = 0   
+				    
+				tissue_score_capeeqtl = dict()
+				for tissue_name_capeeqtl in postgap.Globals.CAPE_eQTL_TISSUES:
+					if tissue_name_capeeqtl in gene_snp_association.intermediary_scores:
+						tissue_score_capeeqtl[tissue_name_capeeqtl] = gene_snp_association.intermediary_scores[tissue_name_capeeqtl]
+				  	else:
+						 tissue_score_capeeqtl[tissue_name_capeeqtl] = 0
+				    
+   				  
+				tissue_score_capedsqtl = dict()
+				for tissue_name_capedsqtl in postgap.Globals.CAPE_dsQTL_TISSUES:
+					if tissue_name_capedsqtl in gene_snp_association.intermediary_scores:
+						tissue_score_capedsqtl[tissue_name_capedsqtl] = gene_snp_association.intermediary_scores[tissue_name_capedsqtl]
+				  	else:
+						tissue_score_capedsqtl[tissue_name_capedsqtl] = 0
+				    
+				  				    			    
+				tissue_score_delta = dict()
+				for tissue_name_delta in postgap.Globals.deltaSVM_TISSUES:
+					if tissue_name_delta in gene_snp_association.intermediary_scores:
+						tissue_score_delta[tissue_name_delta] = gene_snp_association.intermediary_scores[tissue_name_delta]
+				  	else:
+						tissue_score_delta[tissue_name_delta] = 0
+				    			  
 
+				tissue_score_deep = dict()
+				for tissue_name_deep in postgap.Globals.DeepSEA_TISSUES:
+					if tissue_name_deep in gene_snp_association.intermediary_scores:
+						tissue_score_deep[tissue_name_deep] = gene_snp_association.intermediary_scores[tissue_name_deep]
+				  
+				    	else:
+						tissue_score_deep[tissue_name_deep] = 0
+				  			    
+				    
+				tissue_score_dna = dict()
+				for tissue_name_dna in postgap.Globals.DNase1_TISSUES:
+					if tissue_name_dna in gene_snp_association.intermediary_scores:
+						tissue_score_dna[tissue_name_dna] = gene_snp_association.intermediary_scores[tissue_name_dna]
+				  	else:
+						tissue_score_dna[tissue_name_dna] = 0
+				    
 
 				r2_distance = read_pairwise_ld(gene_snp_association.snp, gwas_snp.snp)
 
