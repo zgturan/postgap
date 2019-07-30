@@ -36,6 +36,7 @@ import logging
 import requests
 import subprocess
 import tempfile
+import fnmatch
 
 class Reg_source(object):
 	def run(self, ld_snps, tissues):
