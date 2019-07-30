@@ -43,6 +43,7 @@ import h5py
 import sys
 import numpy
 import postgap.FinemapIntegration
+import fnmatch
 
 VEP_impact_to_score = {
 	'HIGH': 4,
