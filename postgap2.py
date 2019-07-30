@@ -25,7 +25,7 @@ for a in range(df.shape[0]):
           print(df.ix[a][0])
           dff.to_csv(df.ix[a][0] + '.csv',index=True, encoding='utf-8')
     
-  except IOError:
+  except KeyError:
     print 'key error'
  
    
